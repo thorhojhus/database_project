@@ -1,57 +1,68 @@
-CREATE TABLE `account` (
-  `user_id` varchar(255),
-  `passwordhash` varchar(255),
-  `email` varchar(255)
-);
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
 
-CREATE TABLE `user` (
-  `user_id` varchar(255),
-  `username` varchar(255),
-  `created_at` timestamp
-);
+Table account {
+  user_id varchar(255)
+  passwordhash varchar(255)
+  email varchar(255)
+}
 
-CREATE TABLE `post` (
-  `subforum_id` varchar(255),
-  `post_id` varchar(255),
-  `user_id` varchar(255),
-  `title` varchar(255),
-  `body` text,
-  `content_id` varchar(255),
-  `created_at` timestamp
-);
+Table user {
+  user_id varchar(255)
+  username varchar(255)
+  created_at timestamp
+}
 
-CREATE TABLE `comment` (
-  `user_id` varchar(255),
-  `content_id` varchar(255),
-  `body` text,
-  `created_at` timestamp
-);
+Table post {
+  subforum_id varchar(255)
+  post_id varchar(255)
+  user_id varchar(255)
+  title varchar(255)
+  body text
+  content_id varchar(255)
+  created_at timestamp
+}
 
-CREATE TABLE `vote` (
-  `user_id` varchar(255),
-  `content_id` varchar(255)
-);
+Table comment {
+  user_id varchar(255)
+  content_id varchar(255)
+  body text
+  created_at timestamp
+}
 
-CREATE TABLE `subforum` (
-  `subforum_id` varchar(255),
-  `admin_id` varchar(255),
-  `created_at` timestamp
-);
+Table vote {
+  user_id varchar(255)
+  content_id varchar(255)
+}
 
-ALTER TABLE `account` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+Table forum {
+  subforum_id varchar(255)
+  admin_id varchar(255)
+  created_at timestamp
+}
 
-ALTER TABLE `comment` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+Table anon {
+  user_id varchar(255)
+  ip_address varchar(255)
+  created_at timestamp
+}
 
-ALTER TABLE `subforum` ADD FOREIGN KEY (`admin_id`) REFERENCES `user` (`user_id`);
 
-ALTER TABLE `post` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+//user_id references
+Ref: user.user_id < account.user_id
+Ref: user.user_id < comment.user_id
+Ref: user.user_id < forum.admin_id
+Ref: user.user_id < post.user_id
+Ref: user.user_id < vote.user_id
 
-ALTER TABLE `vote` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+//post references
+Ref: post.subforum_id > forum.subforum_id
+Ref: comment.content_id > post.content_id
 
-ALTER TABLE `post` ADD FOREIGN KEY (`subforum_id`) REFERENCES `subforum` (`subforum_id`);
+//vote references
+Ref: vote.content_id > post.content_id
+Ref: vote.content_id > comment.content_id
 
-ALTER TABLE `comment` ADD FOREIGN KEY (`content_id`) REFERENCES `post` (`content_id`);
-
-ALTER TABLE `vote` ADD FOREIGN KEY (`content_id`) REFERENCES `post` (`content_id`);
-
-ALTER TABLE `vote` ADD FOREIGN KEY (`content_id`) REFERENCES `comment` (`content_id`);
+//anon
+Ref: anon.user_id > comment.user_id
+Ref: anon.user_id > vote.user_id
