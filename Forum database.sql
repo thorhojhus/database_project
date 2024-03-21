@@ -11,6 +11,8 @@ Table user {
   user_id varchar(255)
   username varchar(255)
   created_at timestamp
+  upvotes longtext
+  downvotes longtext
 }
 
 Table post {
@@ -19,20 +21,14 @@ Table post {
   user_id varchar(255)
   title varchar(255)
   body text
-  content_id varchar(255)
   created_at timestamp
 }
 
 Table comment {
   user_id varchar(255)
-  content_id varchar(255)
+  comment_id varchar(255)
   body text
   created_at timestamp
-}
-
-Table vote {
-  user_id varchar(255)
-  content_id varchar(255)
 }
 
 Table forum {
@@ -53,16 +49,17 @@ Ref: user.user_id < account.user_id
 Ref: user.user_id < comment.user_id
 Ref: user.user_id < forum.admin_id
 Ref: user.user_id < post.user_id
-Ref: user.user_id < vote.user_id
+Ref: user.upvotes < post.post_id
+Ref: user.downvotes < post.post_id
+Ref: user.upvotes < comment.comment_id
+Ref: user.downvotes < comment.comment_id
+
 
 //post references
-Ref: post.subforum_id > forum.subforum_id
-Ref: comment.content_id > post.content_id
+Ref: post.subforum_id < forum.subforum_id
+Ref: comment.comment_id > post.post_id
 
 //vote references
-Ref: vote.content_id > post.content_id
-Ref: vote.content_id > comment.content_id
+
 
 //anon
-Ref: anon.user_id > comment.user_id
-Ref: anon.user_id > vote.user_id
