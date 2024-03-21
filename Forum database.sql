@@ -15,25 +15,37 @@ Table user {
   downvotes longtext
 }
 
-Table post {
-  subforum_id varchar(255)
-  post_id varchar(255)
+Table thread {
+  forum_id varchar(255)
+  thread_id varchar(255)
   user_id varchar(255)
   title varchar(255)
   body text
+  sum_of_votes int
   created_at timestamp
 }
 
 Table comment {
-  user_id varchar(255)
   comment_id varchar(255)
-  body text
+  thread_id varchar(255)
+  user_id varchar(255)
+  content text
   created_at timestamp
+  sum_of_votes int
+}
+Table reply {
+  reply_id varchar(255)
+  comment_id varchar(255)
+  user_id varchar(255)
+  content text
+  created_at timestamp
+  sum_of_votes int
 }
 
 Table forum {
-  subforum_id varchar(255)
+  forum_id varchar(255)
   admin_id varchar(255)
+  description text
   created_at timestamp
 }
 
@@ -46,20 +58,24 @@ Table anon {
 
 //user_id references
 Ref: user.user_id < account.user_id
-Ref: user.user_id < comment.user_id
 Ref: user.user_id < forum.admin_id
-Ref: user.user_id < post.user_id
-Ref: user.upvotes < post.post_id
-Ref: user.downvotes < post.post_id
+Ref: user.user_id < thread.user_id
+Ref: user.user_id < comment.thread_id
+Ref: user.upvotes < thread.thread_id
+Ref: user.downvotes < thread.thread_id
 Ref: user.upvotes < comment.comment_id
 Ref: user.downvotes < comment.comment_id
 
 
-//post references
-Ref: post.subforum_id < forum.subforum_id
-Ref: comment.comment_id > post.post_id
+//thread references
+Ref: thread.forum_id < forum.forum_id
+Ref: comment.comment_id > thread.thread_id
 
-//vote references
-
+//replyreferences
+Ref: reply.user_id < anon.user_id
+Ref: reply.user_id < user.user_id
+Ref: comment.comment_id < reply.comment_id
 
 //anon
+Ref: anon.user_id > comment.thread_id
+Ref: anon.user_id > comment.comment_id
