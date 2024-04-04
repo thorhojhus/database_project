@@ -29,7 +29,7 @@ user_id INT,
 passwordhash VARCHAR(255),
 email VARCHAR(255),
 created_at DATETIME,
-FOREIGN KEY (user_id) REFERENCES user(user_id)
+FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE anon_user (
@@ -47,9 +47,8 @@ created_at DATETIME,
 sum_of_votes INT,
 upvotes INT,
 downvotes INT,
-FOREIGN KEY (user_id) REFERENCES user(user_id),
+FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE,
 FOREIGN KEY (forum_id) REFERENCES forum(forum_id)
-
 );
 
 CREATE TABLE thread_comments (
