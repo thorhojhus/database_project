@@ -165,12 +165,3 @@ VALUES
     (3, 5, 7, 'That comeback was one for the ages!', '2022-03-10 12:00:00', 10, 12, 2),
     (4, 7, 9, 'I completely agree about the character development. It was masterfully done.', '2022-04-05 19:00:00', 2, 3, 1),
     (5, 9, 1, 'Good luck in the tournament! I''ll be rooting for you.', '2022-05-20 14:00:00', 8, 10, 2);
-
-SHOW TABLES;
-SELECT * FROM account;
-SELECT * FROM user;
-SELECT * FROM anon_user;
-SELECT * FROM comment_replies;
-SELECT * FROM forum;
-SELECT * FROM forum_threads;
-SELECT * FROM thread_comments;

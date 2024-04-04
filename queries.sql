@@ -37,3 +37,13 @@ JOIN forum AS f ON ft.forum_id = f.forum_id
 WHERE f.description = 'Technology and Gadgets';
 
 SELECT * FROM forum;
+
+
+SHOW TABLES;
+SELECT * FROM account;
+SELECT * FROM user;
+SELECT * FROM anon_user;
+SELECT * FROM comment_replies;
+SELECT * FROM forum;
+SELECT * FROM forum_threads;
+SELECT * FROM thread_comments;
